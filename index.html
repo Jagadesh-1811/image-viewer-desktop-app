@@ -8,9 +8,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
+    <!-- Login View -->
+    <div id="login-view" class="login-container">
+        <div class="login-card">
+            <h1 class="logo" style="color: #1a1a1a;">GALLERY</h1>
+            <p>Welcome. Please log in to your secure local workspace.</p>
+            <form id="login-form" autocomplete="off">
+                <input type="text" id="login-name" placeholder="Full Name" required autocomplete="off">
+                <div style="position: relative; width: 100%; margin-bottom: 15px;">
+                    <input type="password" id="login-password" placeholder="Password" required style="margin-bottom: 0;" autocomplete="new-password">
+                    <span id="toggle-password" style="position: absolute; right: 15px; top: 14px; cursor: pointer; color: #666; font-size: 16px; user-select: none;">👁️</span>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+            <p class="login-info">Your credentials are securely stored on your local system only.</p>
+        </div>
+    </div>
+
+    <!-- Main App View -->
+    <div class="app-container" id="main-app-view" style="display: none;">
         <aside class="thumbnail-sidebar">
-            <h1 class="logo">GALLERY</h1>
+            <div class="sidebar-header">
+                <h1 class="logo">GALLERY</h1>
+                <!-- User Profile & Storage Info -->
+                <div class="user-profile">
+                    <div class="avatar" id="user-avatar">?</div>
+                    <div class="user-details">
+                        <span id="user-name-display">User</span>
+                        <span class="storage-info">1 GB Local Storage Available</span>
+                    </div>
+                    <button id="logout-btn" class="icon-btn" style="padding: 4px 8px; font-size: 12px; margin-left: auto;">Logout</button>
+                </div>
+            </div>
             <div class="category-filters">
                 <button class="cat-btn active" data-cat="random">Normal</button>
                 <button class="cat-btn" data-cat="grayscale">Grayscale</button>

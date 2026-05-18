@@ -9,6 +9,103 @@ let images = [];
 let currentIndex = 0;
 let currentZoom = 1;
 
+// Auth Elements
+const loginView = document.getElementById('login-view');
+const mainAppView = document.getElementById('main-app-view');
+const loginForm = document.getElementById('login-form');
+const logoutBtn = document.getElementById('logout-btn');
+const userNameDisplay = document.getElementById('user-name-display');
+const userAvatar = document.getElementById('user-avatar');
+const togglePassword = document.getElementById('toggle-password');
+const loginPassword = document.getElementById('login-password');
+
+// Cryptographic helper to securely hash passwords in SHA-256 hex format
+async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Auth Logic
+function checkAuth() {
+    const sessionStr = localStorage.getItem('premium_gallery_session');
+    if (sessionStr) {
+        const session = JSON.parse(sessionStr);
+        userNameDisplay.textContent = session.name;
+        userAvatar.textContent = session.name.charAt(0).toUpperCase();
+        
+        loginView.style.display = 'none';
+        mainAppView.style.display = 'flex';
+        
+        // Load images only if logged in and not loaded yet
+        if (images.length === 0) fetchImages();
+    } else {
+        loginView.style.display = 'flex';
+        mainAppView.style.display = 'none';
+        
+        // Clear out old images on logout
+        thumbnailGrid.innerHTML = '';
+        images = [];
+        
+        // Securely reset and clear the login form inputs
+        if (loginForm) loginForm.reset();
+        if (loginPassword) loginPassword.type = 'password';
+        if (togglePassword) togglePassword.textContent = '👁️';
+    }
+}
+
+if (togglePassword) {
+    togglePassword.addEventListener('click', () => {
+        if (loginPassword.type === 'password') {
+            loginPassword.type = 'text';
+            togglePassword.textContent = '🙈';
+        } else {
+            loginPassword.type = 'password';
+            togglePassword.textContent = '👁️';
+        }
+    });
+}
+
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('login-name').value;
+    const password = document.getElementById('login-password').value;
+    
+    // Hash password securely
+    const hashedPassword = await hashPassword(password);
+    
+    // Retrieve existing local account
+    const existingAccountStr = localStorage.getItem('premium_gallery_account');
+    
+    if (existingAccountStr) {
+        const account = JSON.parse(existingAccountStr);
+        // Verify credentials against the secure local hash
+        if (account.name === name && account.passwordHash === hashedPassword) {
+            // Correct credentials -> Start session
+            localStorage.setItem('premium_gallery_session', JSON.stringify({ name }));
+            alert(`Welcome back, ${name}!\n\nYou currently have 1 GB of local storage available for your personal data and credentials.`);
+            checkAuth();
+        } else {
+            alert("Authentication Failed! Incorrect username or password.");
+        }
+    } else {
+        // First-time login -> Register the account locally with secure hash
+        const newAccount = { name, passwordHash: hashedPassword };
+        localStorage.setItem('premium_gallery_account', JSON.stringify(newAccount));
+        localStorage.setItem('premium_gallery_session', JSON.stringify({ name }));
+        
+        alert(`Welcome ${name}!\n\nYour secure local workspace has been successfully created.\nYou currently have 1 GB of local storage available for your personal data and credentials.`);
+        checkAuth();
+    }
+});
+
+logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('premium_gallery_session');
+    checkAuth();
+});
+
 let currentCategory = 'random';
 const catBtns = document.querySelectorAll('.cat-btn');
 
@@ -224,5 +321,5 @@ downloadBtn.addEventListener('click', async () => {
     }
 });
 
-// Kick off
-fetchImages();
+// Kick off auth check
+checkAuth();
