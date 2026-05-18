@@ -106,6 +106,18 @@ logoutBtn.addEventListener('click', () => {
     checkAuth();
 });
 
+const resetWorkspaceBtn = document.getElementById('reset-workspace');
+if (resetWorkspaceBtn) {
+    resetWorkspaceBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (confirm("Are you sure you want to reset your local workspace?\n\nThis will permanently delete your stored username and password on this computer, allowing you to create a fresh one.")) {
+            localStorage.clear();
+            alert("Workspace reset successfully! You can now register with a new name and password.");
+            checkAuth();
+        }
+    });
+}
+
 let currentCategory = 'random';
 const catBtns = document.querySelectorAll('.cat-btn');
 
