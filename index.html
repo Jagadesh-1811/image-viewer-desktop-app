@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Image Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="thumbnail-sidebar">
+            <h1 class="logo">GALLERY</h1>
+            <div class="category-filters">
+                <button class="cat-btn active" data-cat="random">Normal</button>
+                <button class="cat-btn" data-cat="grayscale">Grayscale</button>
+                <button class="cat-btn" data-cat="blur">Blurred</button>
+                <button class="cat-btn" data-cat="specific">Specific Size</button>
+            </div>
+            <div class="thumbnail-grid" id="thumbnail-grid">
+                <!-- 10 thumbnails injected by JS -->
+            </div>
+            <div class="loader" id="loader">Loading...</div>
+        </aside>
+        
+        <main class="main-content">
+            <div class="large-image-container" id="large-image-container">
+                <img id="main-image" src="" alt="Main View" style="opacity: 0;">
+            </div>
+            <div class="info-bar" style="display: flex; justify-content: space-between; align-items: center;">
+                <p id="image-url">Fetching images...</p>
+                <div class="zoom-controls" style="display: flex; gap: 10px;">
+                    <button id="zoom-out" class="icon-btn">Zoom Out (-)</button>
+                    <button id="zoom-in" class="icon-btn">Zoom In (+)</button>
+                    <button id="enlarge" class="icon-btn">Enlarge</button>
+                    <button id="download" class="icon-btn">Download</button>
+                </div>
+            </div>
+            <div class="bottom-controls">
+                <button id="prev-btn" class="nav-btn">Previous Image</button>
+                <button id="next-btn" class="nav-btn">Next Image</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Black backdrop for image enhancement (Enlarge) -->
+    <div id="lightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center;">
+        <button id="lightbox-back" style="position: absolute; top: 30px; left: 30px; padding: 10px 20px; background: #ffffff; color: #000000; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-family: 'Inter', sans-serif; transition: transform 0.2s;">&#8592; Go Backward</button>
+        <img id="lightbox-img" src="" style="max-width: 90%; max-height: 90%; object-fit: contain; border-radius: 8px;">
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>

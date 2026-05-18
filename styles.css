@@ -1,0 +1,222 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff; /* White background from sketch */
+    color: #000000; /* Black text */
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    height: calc(100vh - 20px);
+    margin: 10px;
+    padding: 25px;
+    gap: 25px;
+    border: 3px solid #1a1a1a; /* Black outer border line from sketch */
+    border-radius: 32px;
+}
+
+/* Sidebar for 10 thumbnails */
+.thumbnail-sidebar {
+    width: 260px;
+    background: #1a1a1a; /* Dark background matching the sketch's sidebar */
+    border-radius: 24px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+}
+
+.category-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.cat-btn {
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+}
+
+.cat-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.cat-btn.active {
+    background: #ffffff;
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+.thumbnail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    overflow-y: auto;
+    padding-right: 8px; /* space for scrollbar */
+}
+
+/* Scrollbar styling */
+.thumbnail-grid::-webkit-scrollbar {
+    width: 6px;
+}
+.thumbnail-grid::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.thumbnail {
+    width: 100%;
+    aspect-ratio: 1; /* Perfectly square */
+    border-radius: 14px;
+    background: #ffffff; /* White squares from the sketch */
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s ease-in-out;
+    border: 3px solid transparent;
+}
+
+.thumbnail:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+}
+
+.thumbnail.active {
+    opacity: 1;
+    border-color: #ffffff;
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff; /* white loader on dark sidebar */
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.large-image-container {
+    flex-grow: 1;
+    background: #ffffff;
+    border-radius: 24px;
+    border: 3px solid #1a1a1a; /* Bold dark border from the sketch */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 20px;
+}
+
+#main-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+    transition: opacity 0.4s ease;
+}
+
+.info-bar {
+    padding: 5px 15px;
+}
+
+#image-url {
+    color: #1a1a1a;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    word-break: break-all;
+}
+
+.icon-btn {
+    background: #ffffff;
+    color: #1a1a1a;
+    border: 2px solid #1a1a1a;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-family: 'Inter', sans-serif;
+}
+
+.icon-btn:hover {
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+.bottom-controls {
+    display: flex;
+    gap: 20px;
+    height: 70px;
+}
+
+.nav-btn {
+    flex: 1;
+    background: #1a1a1a; /* Dark buttons from sketch */
+    color: #ffffff;
+    border: none;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-family: 'Inter', sans-serif;
+}
+
+.nav-btn:hover {
+    background: #333333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.nav-btn:active {
+    transform: translateY(1px);
+    background: #000000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}

@@ -1,0 +1,21 @@
+{
+  "name": "premium-image-viewer",
+  "version": "1.0.0",
+  "description": "Desktop Image Viewer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.premium.imageviewer",
+    "productName": "Premium Image Viewer",
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "devDependencies": {
+    "electron": "^28.2.0",
+    "electron-builder": "^26.8.1"
+  }
+}
