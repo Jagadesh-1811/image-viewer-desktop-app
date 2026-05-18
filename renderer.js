@@ -70,33 +70,33 @@ if (togglePassword) {
 
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name = document.getElementById('login-name').value;
-    const password = document.getElementById('login-password').value;
+    const nameInput = document.getElementById('login-name').value.trim();
+    const passwordInput = document.getElementById('login-password').value.trim();
     
     // Hash password securely
-    const hashedPassword = await hashPassword(password);
+    const hashedPassword = await hashPassword(passwordInput);
     
     // Retrieve existing local account
     const existingAccountStr = localStorage.getItem('premium_gallery_account');
     
     if (existingAccountStr) {
         const account = JSON.parse(existingAccountStr);
-        // Verify credentials against the secure local hash
-        if (account.name === name && account.passwordHash === hashedPassword) {
-            // Correct credentials -> Start session
-            localStorage.setItem('premium_gallery_session', JSON.stringify({ name }));
-            alert(`Welcome back, ${name}!\n\nYou currently have 1 GB of local storage available for your personal data and credentials.`);
+        // Verify credentials case-insensitively and with trimmed values to prevent casing/whitespace issues
+        if (account.name.trim().toLowerCase() === nameInput.toLowerCase() && account.passwordHash === hashedPassword) {
+            // Correct credentials -> Start session using the original casing of the registered name
+            localStorage.setItem('premium_gallery_session', JSON.stringify({ name: account.name }));
+            alert(`Welcome back, ${account.name}!\n\nYou currently have 1 GB of local storage available for your personal data and credentials.`);
             checkAuth();
         } else {
             alert("Authentication Failed! Incorrect username or password.");
         }
     } else {
         // First-time login -> Register the account locally with secure hash
-        const newAccount = { name, passwordHash: hashedPassword };
+        const newAccount = { name: nameInput, passwordHash: hashedPassword };
         localStorage.setItem('premium_gallery_account', JSON.stringify(newAccount));
-        localStorage.setItem('premium_gallery_session', JSON.stringify({ name }));
+        localStorage.setItem('premium_gallery_session', JSON.stringify({ name: nameInput }));
         
-        alert(`Welcome ${name}!\n\nYour secure local workspace has been successfully created.\nYou currently have 1 GB of local storage available for your personal data and credentials.`);
+        alert(`Welcome ${nameInput}!\n\nYour secure local workspace has been successfully created.\nYou currently have 1 GB of local storage available for your personal data and credentials.`);
         checkAuth();
     }
 });
