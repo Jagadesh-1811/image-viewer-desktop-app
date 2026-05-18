@@ -22,12 +22,34 @@ A native Windows desktop gallery application crafted with a premium, high-contra
 
 ## How it Works (Under the Hood)
 
-```
-[Launcher] ──> [Decrypt Session (localStorage)] ──> [Login Screen (SHA-256 Check)]
-                                                            │
-    ┌───────────────────────────────────────────────────────┘
-    ▼
-[Load Gallery Workspace] ──> [Picsum Concurrent Pull] ──> [Native Filesystem Download]
+```mermaid
+graph TD
+    A[Launch Application] --> B{Session Active?}
+    B -->|Yes| C[Main Gallery Workspace]
+    B -->|No| D[Login / Register Screen]
+    
+    D --> E[Input Credentials]
+    E --> F[Hash Password via SHA-256]
+    F --> G{Account Registered?}
+    
+    G -->|Yes| H{Name & Hash Match?}
+    H -->|Yes| I[Establish Session]
+    H -->|No| J[Authentication Failed Alert]
+    
+    G -->|No| K[Save Credentials & Set Session]
+    K --> I
+    
+    I --> C
+    
+    C --> L[Concurrent Picsum Streams]
+    C --> M[Interactions: Zoom & Lightbox]
+    C --> N[Native OS File Downloader]
+    
+    O[Click Logout] --> P[Clear Session & Reset Form Inputs]
+    P --> D
+    
+    Q[Click Reset Workspace] --> R[Purge Database Cache]
+    R --> D
 ```
 
 * **Storage Path:** `%appdata%\premium-image-viewer\Local Storage\`
