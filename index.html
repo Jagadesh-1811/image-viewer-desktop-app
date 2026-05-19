@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <!-- Login View -->
     <div id="login-view" class="login-container">
@@ -16,14 +18,18 @@
             <form id="login-form" autocomplete="off">
                 <input type="text" id="login-name" placeholder="Full Name" required autocomplete="off">
                 <div style="position: relative; width: 100%; margin-bottom: 15px;">
-                    <input type="password" id="login-password" placeholder="Password" required style="margin-bottom: 0;" autocomplete="new-password">
-                    <span id="toggle-password" style="position: absolute; right: 15px; top: 14px; cursor: pointer; color: #666; font-size: 16px; user-select: none;">👁️</span>
+                    <input type="password" id="login-password" placeholder="Password" required style="margin-bottom: 0;"
+                        autocomplete="new-password">
+                    <span id="toggle-password"
+                        style="position: absolute; right: 15px; top: 14px; cursor: pointer; color: #666; font-size: 16px; user-select: none;">👁️</span>
                 </div>
                 <button type="submit" class="login-btn">Login</button>
             </form>
             <p class="login-info">
                 Your credentials are securely stored on your local system only.<br>
-                <a href="#" id="reset-workspace" style="color: #1a1a1a; text-decoration: underline; font-weight: 600; display: inline-block; margin-top: 8px;">Reset Workspace</a>
+                <a href="#" id="reset-workspace"
+                    style="color: #1a1a1a; text-decoration: underline; font-weight: 600; display: inline-block; margin-top: 8px;">Reset
+                    Workspace</a>
             </p>
         </div>
     </div>
@@ -40,7 +46,8 @@
                         <span id="user-name-display">User</span>
                         <span class="storage-info">1 GB Local Storage Available</span>
                     </div>
-                    <button id="logout-btn" class="icon-btn" style="padding: 4px 8px; font-size: 12px; margin-left: auto;">Logout</button>
+                    <button id="logout-btn" class="icon-btn"
+                        style="padding: 4px 8px; font-size: 12px; margin-left: auto;">Logout</button>
                 </div>
             </div>
             <div class="category-filters">
@@ -48,13 +55,20 @@
                 <button class="cat-btn" data-cat="grayscale">Grayscale</button>
                 <button class="cat-btn" data-cat="blur">Blurred</button>
                 <button class="cat-btn" data-cat="specific">Specific Size</button>
+                <button class="cat-btn" data-cat="s3">S3 Cloud</button>
             </div>
+
+            <div class="local-upload-container">
+                <button id="local-upload-btn" class="local-upload-btn">Upload Image</button>
+                <input type="file" id="local-file-input" style="display: none;" accept="image/*">
+            </div>
+
             <div class="thumbnail-grid" id="thumbnail-grid">
                 <!-- 10 thumbnails injected by JS -->
             </div>
             <div class="loader" id="loader">Loading...</div>
         </aside>
-        
+
         <main class="main-content">
             <div class="large-image-container" id="large-image-container">
                 <img id="main-image" src="" alt="Main View" style="opacity: 0;">
@@ -65,6 +79,9 @@
                     <button id="zoom-out" class="icon-btn">Zoom Out (-)</button>
                     <button id="zoom-in" class="icon-btn">Zoom In (+)</button>
                     <button id="enlarge" class="icon-btn">Enlarge</button>
+                    <button id="save-to-s3-btn" class="icon-btn"
+                        style="background: #2563eb; color: #ffffff; border-color: #2563eb; font-weight: 600;">Save to
+                        S3</button>
                     <button id="download" class="icon-btn">Download</button>
                 </div>
             </div>
@@ -76,11 +93,57 @@
     </div>
 
     <!-- Black backdrop for image enhancement (Enlarge) -->
-    <div id="lightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center;">
-        <button id="lightbox-back" style="position: absolute; top: 30px; left: 30px; padding: 10px 20px; background: #ffffff; color: #000000; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-family: 'Inter', sans-serif; transition: transform 0.2s;">&#8592; Go Backward</button>
+    <div id="lightbox"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center;">
+        <button id="lightbox-back"
+            style="position: absolute; top: 30px; left: 30px; padding: 10px 20px; background: #ffffff; color: #000000; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-family: 'Inter', sans-serif; transition: transform 0.2s;">&#8592;
+            Go Backward</button>
         <img id="lightbox-img" src="" style="max-width: 90%; max-height: 90%; object-fit: contain; border-radius: 8px;">
+    </div>
+
+    <!-- AWS S3 Settings Modal -->
+    <div id="s3-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card s3-modal-card">
+            <h2 class="modal-title">S3 CLOUD CONFIG</h2>
+            <p class="modal-desc">Provide your AWS S3 bucket credentials. These credentials are stored strictly in your
+                secure local app storage.</p>
+            <form id="s3-config-form" autocomplete="off">
+                <div class="form-group">
+                    <label class="form-label">AWS Access Key ID</label>
+                    <input type="password" id="s3-access-key" placeholder="AKIA..." required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">AWS Secret Access Key</label>
+                    <input type="password" id="s3-secret-key" placeholder="Secret Key" required class="form-input">
+                </div>
+                <div class="form-row">
+                    <div class="form-group flex-2">
+                        <label class="form-label">Bucket Name</label>
+                        <input type="text" id="s3-bucket-name" placeholder="my-bucket-name" required class="form-input">
+                    </div>
+                    <div class="form-group flex-1">
+                        <label class="form-label">AWS Region</label>
+                        <input type="text" id="s3-region" placeholder="us-east-1" value="us-east-1" required
+                            class="form-input">
+                    </div>
+                </div>
+                <div class="form-group"
+                    style="display: flex; align-items: center; gap: 10px; margin-top: 10px; margin-bottom: 5px;">
+                    <input type="checkbox" id="s3-auto-mirror"
+                        style="width: 18px; height: 18px; cursor: pointer; accent-color: #2563eb;">
+                    <label for="s3-auto-mirror"
+                        style="font-size: 13px; font-weight: 500; color: #1a1a1a; cursor: pointer; user-select: none;">Automatically
+                        mirror fetched API images to S3</label>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="modal-btn submit-btn">Save Settings</button>
+                    <button type="button" id="s3-modal-close" class="modal-btn cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script src="renderer.js"></script>
 </body>
+
 </html>
